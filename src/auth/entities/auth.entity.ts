@@ -5,7 +5,6 @@ export class Auth {
 
 
     @PrimaryGeneratedColumn()
-    @Column()
     id: number
     @Column()
     name: string
