@@ -1,9 +1,11 @@
+import { type } from 'os';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 
 
 @Entity()
 export class User {
+
   @PrimaryGeneratedColumn() id;
   @Column({ type: 'varchar', unique: true }) username: string;
   @Column({ type: 'varchar' }) password: string;
