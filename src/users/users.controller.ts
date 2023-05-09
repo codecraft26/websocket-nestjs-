@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '../auth/gaurd/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { FriendListDto, RegisterUserDto, UpdateUserDto } from './user.dto';
 import { IdDto } from '../shared/dto/shared.dto';
+import { User } from './user.entity';
 
 @Controller('user')
 @UseGuards(JwtAuthGuard)
@@ -21,6 +22,13 @@ export class UsersController {
   registerUser(@Body() userInfo: RegisterUserDto) {
     return this.userService.register(userInfo);
   }
+
+
+  @Get(':userName')
+  getUserByUserName(@Body() username:string) : Promise<User>{
+    return this.userService.findUser(username)
+  }
+
 
   @Patch(':id')
   updateUser(@Param() param: IdDto, @Body() userInfo: UpdateUserDto) {
