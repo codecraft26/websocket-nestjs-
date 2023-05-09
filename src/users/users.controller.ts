@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/gaurd/jwt-auth.guard';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { FriendListDto, RegisterUserDto, UpdateUserDto } from './user.dto';
+import { IdDto } from '../shared/dto/shared.dto';
 
-@Controller('users')
+@Controller('user')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private userService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  registerUser(@Body() userInfo: RegisterUserDto) {
+    return this.userService.register(userInfo);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  updateUser(@Param() param: IdDto, @Body() userInfo: UpdateUserDto) {
+    return this.userService.updateUser(param.id, userInfo);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Patch('friends/:id')
+  updateUserFriendList(
+    @Param() param: IdDto,
+    @Body() friendInfo: FriendListDto,
+  ) {
+    return friendInfo;
+    // return this.userService.updateUserFriendList(param.id, friendInfo);
+  }
+
+  // todo: Either return user or throw error.
+  @Get(':id')
+  getUser(@Param() param: IdDto) {
+    return this.userService.findUserByUserId(param.id);
   }
 }
