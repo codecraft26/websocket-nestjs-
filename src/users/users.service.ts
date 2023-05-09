@@ -10,8 +10,28 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
+
+  //   async createUser(userInfo:BasicUserInfo) {
+
+  //     const {username} = userInfo;
+  //     if(await this.findUser(username)) {
+  //       throw new Error('User already exists');
+        
+  //     }
+
+
+
+  //   const user = this.userRepository.create(userInfo);
+  //   return this.userRepository.save(user);
+
+
+    
+  // }
+
+
+
   // Finds user by username
-  async findUser(username: string) {
+  async findUser(username: string): Promise<User> {
     return await this.userRepository.findOne({ where: { username: username } });
   }
 
